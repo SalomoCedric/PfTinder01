@@ -1,62 +1,61 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+const supabaseUrl = https://cdwdrafzommhfnjwrlrf.supabase.co;
+const supabaseKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkd2RyYWZ6b21taGZuandybHJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0NzQzOTQsImV4cCI6MjA1NTA1MDM5NH0.jJAxSN_g1SUpXjrRNfUn99A1q-ONBD7HIyo1Jwf-Gs0;
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBEjyN4VabIOl6eOy3o4iQndzDiKve-B8A",
-  authDomain: "pfortetinder.firebaseapp.com",
-  projectId: "pfortetinder",
-  storageBucket: "pfortetinder.firebasestorage.app",
-  messagingSenderId: "595874292907",
-  appId: "1:595874292907:web:d0e6e24047960c7726c3ee",
-  measurementId: "G-YTDLD3T4P8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-function signUp() {
+async function signUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(userCredential => {
-            console.log("Registrierung erfolgreich");
-            window.location.href = 'profile.html';
-        })
-        .catch(error => alert(error.message));
-}
-
-function signIn() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    auth.signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-            console.log("Login erfolgreich");
-            window.location.href = 'profile.html';
-        })
-        .catch(error => alert(error.message));
-}
-
-function saveProfile() {
-    const user = auth.currentUser;
-    if (user) {
-        const name = document.getElementById('name').value;
-        db.collection('users').doc(user.uid).set({
-            name: name,
-            email: user.email
-        }).then(() => {
-            alert("Profil gespeichert!");
-        }).catch(error => console.error("Fehler: ", error));
+    let { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        alert(error.message);
     } else {
+        alert("Registrierung erfolgreich");
+        window.location.href = 'profile.html';
+    }
+}
+
+async function signIn() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    let { user, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        alert(error.message);
+    } else {
+        alert("Login erfolgreich");
+        window.location.href = 'profile.html';
+    }
+}
+
+async function saveProfile() {
+    const user = supabase.auth.user();
+    if (!user) {
         alert("Kein Benutzer angemeldet");
+        return;
+    }
+    const name = document.getElementById('name').value;
+    const fileInput = document.getElementById('profilePic');
+    const file = fileInput.files[0];
+
+    let imageUrl = "";
+    if (file) {
+        const { data, error } = await supabase.storage.from('profiles').upload(`avatars/${user.id}`, file);
+        if (error) {
+            console.error("Fehler beim Hochladen", error);
+        } else {
+            imageUrl = `${supabaseUrl}/storage/v1/object/public/profiles/${data.path}`;
+        }
+    }
+
+    const { error } = await supabase.from('users').upsert({
+        id: user.id,
+        name: name,
+        email: user.email,
+        profile_pic: imageUrl
+    });
+
+    if (error) {
+        console.error("Fehler: ", error);
+    } else {
+        alert("Profil gespeichert!");
     }
 }

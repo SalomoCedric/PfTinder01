@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Matching</title>
+    <title>Login | Social Matching</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 flex items-center justify-center h-screen">
 
-    <div class="container mx-auto p-8">
-        <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
-            <form id="login-form" class="space-y-4">
-                <input type="email" id="email" placeholder="E-Mail" class="w-full p-3 border border-gray-300 rounded">
-                <input type="password" id="password" placeholder="Passwort" class="w-full p-3 border border-gray-300 rounded">
-                <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded">Einloggen</button>
-            </form>
-            <div class="mt-4 text-center">
-                <p>Noch kein Konto? <a href="/register" class="text-blue-500">Registrieren</a></p>
-            </div>
-        </div>
+    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+        <h2 class="text-2xl font-bold text-center">Login</h2>
+        <form id="login-form" class="space-y-4">
+            <input type="email" id="email" placeholder="E-Mail" class="w-full p-2 border rounded">
+            <input type="password" id="password" placeholder="Passwort" class="w-full p-2 border rounded">
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Einloggen</button>
+        </form>
+        <p class="text-center mt-4">
+            Noch kein Konto? <a href="register.html" class="text-blue-500">Registrieren</a>
+        </p>
     </div>
 
-    <script src="frontend/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+

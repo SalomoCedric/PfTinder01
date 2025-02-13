@@ -1,10 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
-  authDomain: "pftinder-79946.firebaseapp.com",
-  projectId: "pftinder-79946",
-  storageBucket: "pftinder-79946.firebasestorage.app",
-  messagingSenderId: "165850597415",
-  appId: "1:165850597415:web:84e698173e2f983c4d6602"
+  apiKey: "AIzaSyBEjyN4VabIOl6eOy3o4iQndzDiKve-B8A",
+  authDomain: "pfortetinder.firebaseapp.com",
+  projectId: "pfortetinder",
+  storageBucket: "pfortetinder.firebasestorage.app",
+  messagingSenderId: "595874292907",
+  appId: "1:595874292907:web:d0e6e24047960c7726c3ee",
+  measurementId: "G-YTDLD3T4P8"
 };
 
 firebase.initializeApp(firebaseConfig);
